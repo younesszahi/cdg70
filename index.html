@@ -3,10 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embedded PDF Example</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Photo Viewer</title>
+    <style>
+        /* Basic styling for centering and spacing */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        img {
+            max-width: 100%;
+            max-height: 80vh; /* Adjust as needed */
+        }
+        .btn-container {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <embed src="policies.pdf#toolbar=0&navpanes=0&scrollbar=1" id="pdf-embed">
+    <div id="image-container">
+        <img id="current-image" src="photos/page1.png" alt="Page 1">
+    </div>
+    <div class="btn-container">
+        <button onclick="prevImage()">Previous</button>
+        <button onclick="nextImage()">Next</button>
+    </div>
+
+    <script>
+        var currentImageIndex = 1;
+        var maxImages = 13; // Total number of images
+
+        function prevImage() {
+            if (currentImageIndex > 1) {
+                currentImageIndex--;
+            } else {
+                currentImageIndex = maxImages;
+            }
+            updateImage();
+        }
+
+        function nextImage() {
+            if (currentImageIndex < maxImages) {
+                currentImageIndex++;
+            } else {
+                currentImageIndex = 1;
+            }
+            updateImage();
+        }
+
+        function updateImage() {
+            var imgElement = document.getElementById('current-image');
+            imgElement.src = 'photos/page' + currentImageIndex + '.png';
+            imgElement.alt = 'Page ' + currentImageIndex;
+        }
+    </script>
 </body>
 </html>
