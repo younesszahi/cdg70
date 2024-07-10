@@ -1,17 +1,15 @@
-/* styles.css */
-
 body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
 }
 
-canvas {
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
+h1 {
+    color: #333;
 }
 
-button {
-  margin-right: 10px;
-  padding: 10px 20px;
-  cursor: pointer;
+embed {
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
