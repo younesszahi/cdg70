@@ -32,36 +32,36 @@
         <img id="current-image" src="photos/page1.png" alt="Page 1">
     </div>
     <div class="btn-container">
-        <button onclick="prevImage()">Previous</button>
-        <button onclick="nextImage()">Next</button>
+        <button onclick="prevPage()">Previous</button>
+        <button onclick="nextPage()">Next</button>
     </div>
 
     <script>
-        var currentImageIndex = 1;
-        var maxImages = 13; // Total number of images
+        var currentPageIndex = 1;
+        var totalPages = 13; // Total number of pages
 
-        function prevImage() {
-            if (currentImageIndex > 1) {
-                currentImageIndex--;
+        function prevPage() {
+            if (currentPageIndex > 1) {
+                currentPageIndex--;
             } else {
-                currentImageIndex = maxImages;
+                currentPageIndex = totalPages;
             }
-            updateImage();
+            updatePage();
         }
 
-        function nextImage() {
-            if (currentImageIndex < maxImages) {
-                currentImageIndex++;
+        function nextPage() {
+            if (currentPageIndex < totalPages) {
+                currentPageIndex++;
             } else {
-                currentImageIndex = 1;
+                currentPageIndex = 1;
             }
-            updateImage();
+            updatePage();
         }
 
-        function updateImage() {
+        function updatePage() {
             var imgElement = document.getElementById('current-image');
-            imgElement.src = 'photos/page' + currentImageIndex + '.png';
-            imgElement.alt = 'Page ' + currentImageIndex;
+            imgElement.src = 'photos/page' + currentPageIndex + '.png';
+            imgElement.alt = 'Page ' + currentPageIndex;
         }
     </script>
 </body>
