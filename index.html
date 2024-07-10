@@ -3,66 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Viewer</title>
-    <style>
-        /* Basic styling for centering and spacing */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        img {
-            max-width: 100%;
-            max-height: 80vh; /* Adjust as needed */
-        }
-        .btn-container {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-    </style>
+    <title>CDG70 Vendor Briefing Checklists</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="image-container">
-        <img id="current-image" src="photos/page1.png" alt="Page 1">
-    </div>
-    <div class="btn-container">
-        <button onclick="prevPage()">Previous</button>
-        <button onclick="nextPage()">Next</button>
-    </div>
-
-    <script>
-        var currentPageIndex = 1;
-        var totalPages = 13; // Total number of pages
-
-        function prevPage() {
-            if (currentPageIndex > 1) {
-                currentPageIndex--;
-            } else {
-                currentPageIndex = totalPages;
-            }
-            updatePage();
-        }
-
-        function nextPage() {
-            if (currentPageIndex < totalPages) {
-                currentPageIndex++;
-            } else {
-                currentPageIndex = 1;
-            }
-            updatePage();
-        }
-
-        function updatePage() {
-            var imgElement = document.getElementById('current-image');
-            imgElement.src = 'photos/page' + currentPageIndex + '.png';
-            imgElement.alt = 'Page ' + currentPageIndex;
-        }
-    </script>
+    <header>
+        <h1>CDG70 Vendor Briefing Checklists</h1>
+    </header>
+    <main>
+        <section id="pre-brief">
+            <h2>Pre-Brief Checklist</h2>
+            <ul>
+                <li>
+                    <input type="checkbox" id="security">
+                    <label for="security">Security:</label>
+                    <ul>
+                        <li>Ensure Security Induction has been completed</li>
+                        <li>Ensure the vendor got a tested radio for communication</li>
+                        <li>Discuss the badging process</li>
+                        <li>BB to escort the vendors all the time when moving in the building</li>
+                        <li>Discuss the process if an alarm is triggered (stop and call security)</li>
+                    </ul>
+                </li>
+                <!-- Other checklist items for Pre-Brief -->
+            </ul>
+        </section>
+        <section id="post-brief">
+            <h2>Post-Brief Checklist</h2>
+            <ul>
+                <li>
+                    <input type="checkbox" id="equipment-safety">
+                    <label for="equipment-safety">Equipment Safety:</label>
+                    <ul>
+                        <li>Vendor to Handover to DCEO upon completion</li>
+                        <li>DCEO to Deisolate if LOTO has been applied</li>
+                        <!-- Add other items as per your checklist -->
+                    </ul>
+                </li>
+                <!-- Other checklist items for Post-Brief -->
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <button id="generate-pdf">Generate PDF</button>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
