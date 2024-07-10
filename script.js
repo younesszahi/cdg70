@@ -1,37 +1,27 @@
-// JavaScript for drawing functionality
-
-const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
 let isDrawing = false;
 
-canvas.width = window.innerWidth * 0.8;
-canvas.height = 400;
-
-ctx.lineWidth = 3;
-ctx.lineCap = 'round';
-ctx.strokeStyle = '#000';
-
-function startDrawing(e) {
+canvas.addEventListener('touchstart', function(event) {
     isDrawing = true;
-    draw(e);
-}
+    const touch = event.touches[0];
+    const x = touch.clientX - canvas.offsetLeft;
+    const y = touch.clientY - canvas.offsetTop;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+});
 
-function stopDrawing() {
+canvas.addEventListener('touchmove', function(event) {
+    if (isDrawing) {
+        const touch = event.touches[0];
+        const x = touch.clientX - canvas.offsetLeft;
+        const y = touch.clientY - canvas.offsetTop;
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
+});
+
+canvas.addEventListener('touchend', function(event) {
     isDrawing = false;
-    ctx.beginPath();
-}
-
-function draw(e) {
-    if (!isDrawing) return;
-
-    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-}
-
-canvas.addEventListener('mousedown', startDrawing);
-canvas.addEventListener('mousemove', draw);
-canvas.addEventListener('mouseup', stopDrawing);
-canvas.addEventListener('mouseout', stopDrawing);
+});
