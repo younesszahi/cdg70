@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Drawing Website</title>
+    <title>PDF Annotation</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Simple Drawing Website</h1>
-        <canvas id="canvas"></canvas>
-    </div>
+    <canvas id="pdfCanvas"></canvas>
+    <br>
+    <button onclick="clearCanvas()">Clear</button>
+    <button onclick="downloadPDF()">Download Annotated PDF</button>
+    
     <script src="script.js"></script>
 </body>
 </html>
