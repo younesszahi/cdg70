@@ -1,27 +1,53 @@
-const canvas = document.getElementById('myCanvas');
+// script.js
+
+const canvas = document.getElementById('pdfCanvas');
 const ctx = canvas.getContext('2d');
+let pdfDoc = null;
+let pageIndex = 0;
 
-let isDrawing = false;
+// Load PDF file
+PDFDocument.load(fetch('policies.pdf'))
+  .then(doc => {
+    pdfDoc = doc;
+    renderPage(pdfDoc, pageIndex + 1);
+  })
+  .catch(err => console.error('Error loading PDF:', err));
 
-canvas.addEventListener('touchstart', function(event) {
-    isDrawing = true;
-    const touch = event.touches[0];
-    const x = touch.clientX - canvas.offsetLeft;
-    const y = touch.clientY - canvas.offsetTop;
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-});
+function renderPage(pdfDoc, pageNum) {
+  const page = pdfDoc.getPage(pageNum);
+  const viewport = page.getViewport({ scale: 1.5 });
 
-canvas.addEventListener('touchmove', function(event) {
-    if (isDrawing) {
-        const touch = event.touches[0];
-        const x = touch.clientX - canvas.offsetLeft;
-        const y = touch.clientY - canvas.offsetTop;
-        ctx.lineTo(x, y);
-        ctx.stroke();
-    }
-});
+  canvas.height = viewport.height;
+  canvas.width = viewport.width;
 
-canvas.addEventListener('touchend', function(event) {
-    isDrawing = false;
-});
+  page.render({
+    canvasContext: ctx,
+    viewport: viewport
+  });
+}
+
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function saveAnnotation() {
+  const page = pdfDoc.getPage(pageIndex + 1);
+  const canvasDataURL = canvas.toDataURL('image/png');
+
+  // Embed the drawn image onto the PDF page
+  PDFImage.createEmbedded(pdfDoc, canvasDataURL)
+    .then(image => {
+      page.drawImage(image, {
+        x: 100,
+        y: 100,
+        width: image.width,
+        height: image.height,
+      });
+    })
+    .catch(err => console.error('Error embedding image:', err));
+}
+
+function downloadPDF() {
+  // Save the PDF with annotations
+  pdfDoc.saveAs('annotated_policies.pdf');
+}
