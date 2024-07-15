@@ -1,130 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CDG70 VENDOR BRIEFING CHECKLISTS</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>CDG70 VENDOR BRIEFING CHECKLISTS</h1>
-    </header>
-
-    <form id="infoForm">
-      <div class="form-section">
-        <h2>Vendor Information</h2>
-        <div class="form-group">
-          <label for="vendorName">Vendor Name:</label>
-          <input type="text" id="vendorName" name="vendorName" required>
-        </div>
-
-        <div class="form-group">
-          <label for="equipment">Equipment:</label>
-          <input type="text" id="equipment" name="equipment" required>
-        </div>
-
-        <div class="form-group">
-          <label for="mcmSimTNo">MCM/SIM-T No.:</label>
-          <input type="text" id="mcmSimTNo" name="mcmSimTNo" required>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h2>Job Details</h2>
-        <div class="form-group">
-          <label for="jobDescription">Job Description:</label>
-          <textarea id="jobDescription" name="jobDescription" rows="4" cols="50" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="vendorEngineers">Vendor/DCEO Engineer(s):</label>
-          <div id="engineerGroupContainer">
-            <div class="engineer-group">
-              <textarea name="vendorEngineers[]" rows="2" cols="50" required></textarea>
-              <button type="button" onclick="addEngineerField()">+</button>
+    <div class='app'>
+        <main class='project'>
+            <div class='project-info'>
+                <h1>Homepage Design</h1>
+                <div class='project-participants'>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <button class='project-participants__add'>Add Participant</button>
+                </div>
             </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="dateOfVisit">Date of Visit:</label>
-          <input type="date" id="dateOfVisit" name="dateOfVisit" required>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h2>Briefing</h2>
-        <div class="form-group">
-          <label for="preBrief">Pre-Brief:</label>
-          <textarea id="preBrief" name="preBrief" rows="4" cols="50" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="postBrief">Post-Brief:</label>
-          <textarea id="postBrief" name="postBrief" rows="4" cols="50" required></textarea>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h2>Checklists</h2>
-        <div class="checklist-group">
-          <div class="section-header">1. Security:</div>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="security[]" value="Ensure Security Induction has been completed"> Ensure Security Induction has been completed</label><br>
-            <label><input type="checkbox" name="security[]" value="Ensure the vendor has a tested radio for communication"> Ensure the vendor has a tested radio for communication</label><br>
-            <label><input type="checkbox" name="security[]" value="Discuss the badging process"> Discuss the badging process</label><br>
-            <label><input type="checkbox" name="security[]" value="BB to escort the vendors all the time when moving in the building"> BB to escort the vendors all the time when moving in the building</label><br>
-            <label><input type="checkbox" name="security[]" value="Discuss the process if an alarm is triggered (stop and call security)"> Discuss the process if an alarm is triggered (stop and call security)</label><br>
-          </div>
-
-          <div class="section-header">2. Safety:</div>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="safety[]" value="Discuss the Risk Assessment"> Discuss the Risk Assessment</label><br>
-            <label><input type="checkbox" name="safety[]" value="Recommended PPE to be worn"> Recommended PPE to be worn</label><br>
-            <label><input type="checkbox" name="safety[]" value="Signs and Barriers are erected"> Signs and Barriers are erected</label><br>
-            <label><input type="checkbox" name="safety[]" value="Ensure vendor is aware of nearest Muster Points or must read the Station Bill"> Ensure vendor is aware of nearest Muster Points or must read the Station Bill</label><br>
-            <label><input type="checkbox" name="safety[]" value="Discuss the Evacuation Procedure"> Discuss the Evacuation Procedure</label><br>
-            <label><input type="checkbox" name="safety[]" value="Familiarize the Fire Exit on the worksite"> Familiarize the Fire Exit on the worksite</label><br>
-            <label><input type="checkbox" name="safety[]" value="Discuss the TOFS (Time Out For Safety)"> Discuss the TOFS (Time Out For Safety)</label><br>
-          </div>
-
-          <div class="section-header">3. MCM Process/Workscopes:</div>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="mcmProcess[]" value="Discuss MCM should be live before commencing and FOC has been notified for Alarms"> Discuss MCM should be live before commencing and FOC has been notified for Alarms</label><br>
-            <label><input type="checkbox" name="mcmProcess[]" value="LOTO to be in placed by DCEO and Vendor to wait until handover"> LOTO to be in placed by DCEO and Vendor to wait until handover</label><br>
-            <label><input type="checkbox" name="mcmProcess[]" value="RAMS is available and require to adhere to (No task to be done outside the Method of Statement)"> RAMS is available and require to adhere to (No task to be done outside the Method of Statement)</label><br>
-            <label><input type="checkbox" name="mcmProcess[]" value="Discuss Engineers Onsite Report is Mandatory and required to be provided upon job completion"> Discuss Engineers Onsite Report is Mandatory and required to be provided upon job completion</label><br>
-          </div>
-
-          <div class="section-header">4. Escalation Process:</div>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="escalationProcess[]" value="If condition changed during the procedure. Vendor to STOP work and notify DCEO. Then DCEO will Escalate further if required."> If condition changed during the procedure. Vendor to STOP work and notify DCEO. Then DCEO will Escalate further if required.</label><br>
-          </div>
-        </div>
-      </div>
-
-      <!-- Approval Message -->
-      <div class="form-section approval-message">
-        <p>Everything above is approved.</p>
-      </div>
-
-      <!-- Signature Photo Upload -->
-      <div class="form-section">
-        <h2>Signature Photo</h2>
-        <div class="form-group">
-          <label for="signature">Upload Signature (Photo):</label>
-          <input type="file" id="signature" name="signature" accept="image/*">
-        </div>
-      </div>
-
-      <!-- Generate PDF Button -->
-      <button type="button" onclick="generatePDF()">Generate PDF Report</button>
-    </form>
-  </div>
-
-  <script src="script.js"></script>
+            <div class='project-tasks'>
+                <!-- Votre code HTML ici -->
+            </div>
+        </main>
+        <aside class='task-details'>
+            <!-- Votre code HTML ici -->
+        </aside>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
