@@ -2,18 +2,27 @@ function generatePDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
-  // Handling signature photo upload
-  const signatureFile = document.getElementById('signature').files[0];
-  let signatureDataURL = '';
+  const pageHeight = doc.internal.pageSize.height; // Page height
+  let currentY = 10; // Initial Y position
 
+  const addTextWithPageBreak = (text, x, y, options = {}) => {
+    if (y + 10 > pageHeight) { // Check if the Y position will exceed the page height
+      doc.addPage();
+      y = 10; // Reset Y position for the new page
+    }
+    doc.text(text, x, y, options);
+    return y + 10; // Return the new Y position after adding the text
+  };
+
+  // Function to draw each section, dynamically adding pages as needed
   const generateDocument = () => {
-    // Page 1: Vendor Information
+    // Vendor Information
     doc.setFillColor('#232f3e'); // Background color
     doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
 
     doc.setFontSize(16);
     doc.setTextColor('#ff9900'); // Orange color for titles
-    doc.text('CDG70 VENDOR BRIEFING CHECKLISTS', 10, 10);
+    currentY = addTextWithPageBreak('CDG70 VENDOR BRIEFING CHECKLISTS', 10, currentY);
 
     const vendorName = document.getElementById('vendorName').value;
     const equipment = document.getElementById('equipment').value;
@@ -22,128 +31,95 @@ function generatePDF() {
 
     doc.setFontSize(12);
     doc.setTextColor('#ff9900');
-    doc.text('Vendor Name:', 10, 20);
+    currentY = addTextWithPageBreak('Vendor Name:', 10, currentY);
     doc.setTextColor('#ffffff');
-    doc.text(vendorName, 50, 20);
+    currentY = addTextWithPageBreak(vendorName, 50, currentY);
 
     doc.setTextColor('#ff9900');
-    doc.text('Equipment:', 10, 30);
+    currentY = addTextWithPageBreak('Equipment:', 10, currentY);
     doc.setTextColor('#ffffff');
-    doc.text(equipment, 50, 30);
+    currentY = addTextWithPageBreak(equipment, 50, currentY);
 
     doc.setTextColor('#ff9900');
-    doc.text('MCM/SIM-T No.:', 10, 40);
+    currentY = addTextWithPageBreak('MCM/SIM-T No.:', 10, currentY);
     doc.setTextColor('#ffffff');
-    doc.text(mcmSimTNo, 50, 40);
+    currentY = addTextWithPageBreak(mcmSimTNo, 50, currentY);
 
     doc.setTextColor('#ff9900');
-    doc.text('Job Description:', 10, 50);
+    currentY = addTextWithPageBreak('Job Description:', 10, currentY);
     doc.setTextColor('#ffffff');
-    doc.text(jobDescription, 50, 50);
+    currentY = addTextWithPageBreak(jobDescription, 50, currentY);
 
-    // Move to the next page
-    doc.addPage();
-
-    // Page 2: Briefing
+    // Briefing
     const dateOfVisit = document.getElementById('dateOfVisit').value;
     const preBrief = document.getElementById('preBrief').value;
     const postBrief = document.getElementById('postBrief').value;
 
-    doc.setFillColor('#232f3e'); // Background color
-    doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
-
-    let currentY = 10;
-
     doc.setFontSize(12);
     doc.setTextColor('#ff9900');
-    doc.text('Date of Visit:', 10, currentY);
+    currentY = addTextWithPageBreak('Date of Visit:', 10, currentY);
     doc.setTextColor('#ffffff');
-    doc.text(dateOfVisit, 50, currentY);
-    currentY += 10;
+    currentY = addTextWithPageBreak(dateOfVisit, 50, currentY);
 
     doc.setTextColor('#ff9900');
-    doc.text('Pre-Brief:', 10, currentY);
+    currentY = addTextWithPageBreak('Pre-Brief:', 10, currentY);
     doc.setTextColor('#ffffff');
-    doc.text(preBrief, 50, currentY);
-    currentY += 10;
+    currentY = addTextWithPageBreak(preBrief, 50, currentY);
 
     doc.setTextColor('#ff9900');
-    doc.text('Post-Brief:', 10, currentY);
+    currentY = addTextWithPageBreak('Post-Brief:', 10, currentY);
     doc.setTextColor('#ffffff');
-    doc.text(postBrief, 50, currentY);
+    currentY = addTextWithPageBreak(postBrief, 50, currentY);
 
-    // Move to the next page
-    doc.addPage();
-
-    // Page 3: Checklists
+    // Checklists
     const securityItems = document.querySelectorAll('input[name="security[]"]:checked');
     const safetyItems = document.querySelectorAll('input[name="safety[]"]:checked');
     const mcmProcessItems = document.querySelectorAll('input[name="mcmProcess[]"]:checked');
     const escalationProcessItems = document.querySelectorAll('input[name="escalationProcess[]"]:checked');
     const engineerTextareas = document.getElementsByName('vendorEngineers[]');
 
-    doc.setFillColor('#232f3e'); // Background color
-    doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
-
-    currentY = 10;
-
     doc.setFontSize(12);
     doc.setTextColor('#ff9900');
-    doc.text('1. Security:', 10, currentY);
-    currentY += 10;
+    currentY = addTextWithPageBreak('1. Security:', 10, currentY);
     securityItems.forEach((checkbox) => {
       doc.setTextColor('#ffffff');
-      doc.text(`- ${checkbox.value}`, 20, currentY);
-      currentY += 10;
+      currentY = addTextWithPageBreak(`- ${checkbox.value}`, 20, currentY);
     });
 
     doc.setTextColor('#ff9900');
-    doc.text('2. Safety:', 10, currentY);
-    currentY += 10;
+    currentY = addTextWithPageBreak('2. Safety:', 10, currentY);
     safetyItems.forEach((checkbox) => {
       doc.setTextColor('#ffffff');
-      doc.text(`- ${checkbox.value}`, 20, currentY);
-      currentY += 10;
+      currentY = addTextWithPageBreak(`- ${checkbox.value}`, 20, currentY);
     });
 
     doc.setTextColor('#ff9900');
-    doc.text('3. MCM Process/Workscopes:', 10, currentY);
-    currentY += 10;
+    currentY = addTextWithPageBreak('3. MCM Process/Workscopes:', 10, currentY);
     mcmProcessItems.forEach((checkbox) => {
       doc.setTextColor('#ffffff');
-      doc.text(`- ${checkbox.value}`, 20, currentY);
-      currentY += 10;
+      currentY = addTextWithPageBreak(`- ${checkbox.value}`, 20, currentY);
     });
 
     doc.setTextColor('#ff9900');
-    doc.text('4. Escalation Process:', 10, currentY);
-    currentY += 10;
+    currentY = addTextWithPageBreak('4. Escalation Process:', 10, currentY);
     escalationProcessItems.forEach((checkbox) => {
       doc.setTextColor('#ffffff');
-      doc.text(`- ${checkbox.value}`, 20, currentY);
-      currentY += 10;
+      currentY = addTextWithPageBreak(`- ${checkbox.value}`, 20, currentY);
     });
 
-    currentY += 10;
     for (let i = 0; i < engineerTextareas.length; i++) {
       const engineerName = engineerTextareas[i].value.trim();
       if (engineerName !== '') {
         doc.setTextColor('#ff9900');
-        doc.text(`Vendor/DCEO Engineer ${i + 1}:`, 10, currentY);
+        currentY = addTextWithPageBreak(`Vendor/DCEO Engineer ${i + 1}:`, 10, currentY);
         doc.setTextColor('#ffffff');
-        doc.text(engineerName, 70, currentY);
-        currentY += 10;
+        currentY = addTextWithPageBreak(engineerName, 70, currentY);
       }
     }
 
-    // Move to the next page
-    doc.addPage();
-
-    // Page 4: Signature
-    doc.setFillColor('#232f3e'); // Background color for the new page
-    doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
-
+    // Signature
     if (signatureDataURL) {
+      doc.addPage();
       const imgWidth = 50; // Adjust size as needed
       const imgHeight = 25; // Adjust size as needed
       doc.addImage(signatureDataURL, 'JPEG', 10, 10, imgWidth, imgHeight);
