@@ -1,3 +1,28 @@
+// Function to add a new engineer field
+function addEngineerField() {
+  const container = document.getElementById('engineerGroupContainer');
+  const newFieldGroup = document.createElement('div');
+  newFieldGroup.className = 'engineer-group';
+
+  const newTextArea = document.createElement('textarea');
+  newTextArea.name = 'vendorEngineers[]';
+  newTextArea.rows = 2;
+  newTextArea.cols = 50;
+  newTextArea.required = true;
+
+  const removeButton = document.createElement('button');
+  removeButton.type = 'button';
+  removeButton.innerHTML = '-';
+  removeButton.onclick = function() {
+    container.removeChild(newFieldGroup);
+  };
+
+  newFieldGroup.appendChild(newTextArea);
+  newFieldGroup.appendChild(removeButton);
+  container.appendChild(newFieldGroup);
+}
+
+// Function to generate the PDF
 function generatePDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -119,25 +144,22 @@ function generatePDF() {
     });
 
     // Signature
-    if (signatureDataURL) {
-      doc.addPage();
-      const imgWidth = 50; // Adjust size as needed
-      const imgHeight = 25; // Adjust size as needed
-      doc.addImage(signatureDataURL, 'JPEG', 10, 10, imgWidth, imgHeight);
+    const signatureFile = document.getElementById('signature').files[0];
+    if (signatureFile) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const signatureDataURL = event.target.result;
+        doc.addPage();
+        const imgWidth = 50; // Adjust size as needed
+        const imgHeight = 25; // Adjust size as needed
+        doc.addImage(signatureDataURL, 'JPEG', 10, 10, imgWidth, imgHeight);
+        doc.save('CDG70_Vendor_Briefing_Checklist.pdf');
+      };
+      reader.readAsDataURL(signatureFile);
+    } else {
+      doc.save('CDG70_Vendor_Briefing_Checklist.pdf');
     }
-
-    // Save the PDF
-    doc.save('CDG70_Vendor_Briefing_Checklist.pdf');
   };
 
-  if (signatureFile) {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      signatureDataURL = event.target.result;
-      generateDocument();
-    };
-    reader.readAsDataURL(signatureFile);
-  } else {
-    generateDocument();
-  }
+  generateDocument();
 }
