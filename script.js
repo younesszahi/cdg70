@@ -50,6 +50,18 @@ function generatePDF() {
     doc.setTextColor('#ffffff');
     currentY = addTextWithPageBreak(jobDescription, 50, currentY);
 
+    // Vendor/DCEO Engineer(s) section (placed right after Job Description)
+    const engineerTextareas = document.getElementsByName('vendorEngineers[]');
+    for (let i = 0; i < engineerTextareas.length; i++) {
+      const engineerName = engineerTextareas[i].value.trim();
+      if (engineerName !== '') {
+        doc.setTextColor('#ff9900');
+        currentY = addTextWithPageBreak(`Vendor/DCEO Engineer ${i + 1}:`, 10, currentY);
+        doc.setTextColor('#ffffff');
+        currentY = addTextWithPageBreak(engineerName, 70, currentY);
+      }
+    }
+
     // Briefing
     const dateOfVisit = document.getElementById('dateOfVisit').value;
     const preBrief = document.getElementById('preBrief').value;
@@ -76,7 +88,6 @@ function generatePDF() {
     const safetyItems = document.querySelectorAll('input[name="safety[]"]:checked');
     const mcmProcessItems = document.querySelectorAll('input[name="mcmProcess[]"]:checked');
     const escalationProcessItems = document.querySelectorAll('input[name="escalationProcess[]"]:checked');
-    const engineerTextareas = document.getElementsByName('vendorEngineers[]');
 
     doc.setFontSize(12);
     doc.setTextColor('#ff9900');
@@ -106,16 +117,6 @@ function generatePDF() {
       doc.setTextColor('#ffffff');
       currentY = addTextWithPageBreak(`- ${checkbox.value}`, 20, currentY);
     });
-
-    for (let i = 0; i < engineerTextareas.length; i++) {
-      const engineerName = engineerTextareas[i].value.trim();
-      if (engineerName !== '') {
-        doc.setTextColor('#ff9900');
-        currentY = addTextWithPageBreak(`Vendor/DCEO Engineer ${i + 1}:`, 10, currentY);
-        doc.setTextColor('#ffffff');
-        currentY = addTextWithPageBreak(engineerName, 70, currentY);
-      }
-    }
 
     // Signature
     if (signatureDataURL) {
