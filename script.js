@@ -90,6 +90,7 @@ function generatePDF() {
       doc.setTextColor('#ffffff');
       doc.text(dateOfVisit, 50, currentY);
       currentY += 10;
+      doc.addPage();
 
       doc.setTextColor('#ff9900');
       doc.text('Pre-Brief:', 10, currentY);
