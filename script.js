@@ -7,7 +7,7 @@ function generatePDF() {
   let signatureDataURL = '';
 
   const generateDocument = () => {
-    // Vendor Information Page
+    // Page 1: Vendor Information
     doc.setFillColor('#232f3e'); // Background color
     doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
 
@@ -41,15 +41,20 @@ function generatePDF() {
     doc.setTextColor('#ffffff');
     doc.text(jobDescription, 50, 50);
 
+    // Move to the next page
     doc.addPage();
 
-    // Briefing Page
+    // Page 2: Briefing
     const dateOfVisit = document.getElementById('dateOfVisit').value;
     const preBrief = document.getElementById('preBrief').value;
     const postBrief = document.getElementById('postBrief').value;
 
+    doc.setFillColor('#232f3e'); // Background color
+    doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
+
     let currentY = 10;
 
+    doc.setFontSize(12);
     doc.setTextColor('#ff9900');
     doc.text('Date of Visit:', 10, currentY);
     doc.setTextColor('#ffffff');
@@ -67,17 +72,22 @@ function generatePDF() {
     doc.setTextColor('#ffffff');
     doc.text(postBrief, 50, currentY);
 
+    // Move to the next page
     doc.addPage();
 
-    // Checklists Page
+    // Page 3: Checklists
     const securityItems = document.querySelectorAll('input[name="security[]"]:checked');
     const safetyItems = document.querySelectorAll('input[name="safety[]"]:checked');
     const mcmProcessItems = document.querySelectorAll('input[name="mcmProcess[]"]:checked');
     const escalationProcessItems = document.querySelectorAll('input[name="escalationProcess[]"]:checked');
     const engineerTextareas = document.getElementsByName('vendorEngineers[]');
 
+    doc.setFillColor('#232f3e'); // Background color
+    doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
+
     currentY = 10;
 
+    doc.setFontSize(12);
     doc.setTextColor('#ff9900');
     doc.text('1. Security:', 10, currentY);
     currentY += 10;
@@ -126,13 +136,14 @@ function generatePDF() {
       }
     }
 
+    // Move to the next page
     doc.addPage();
 
-    // Signature Page
-    if (signatureDataURL) {
-      doc.setFillColor('#232f3e'); // Background color for new page
-      doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
+    // Page 4: Signature
+    doc.setFillColor('#232f3e'); // Background color for the new page
+    doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
 
+    if (signatureDataURL) {
       const imgWidth = 50; // Adjust size as needed
       const imgHeight = 25; // Adjust size as needed
       doc.addImage(signatureDataURL, 'JPEG', 10, 10, imgWidth, imgHeight);
